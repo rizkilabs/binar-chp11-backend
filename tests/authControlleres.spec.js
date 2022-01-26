@@ -73,23 +73,6 @@ describe('register function', () => {
     });
   });
 
-  test('should 400 if has uppercase letter in email format', async () => {
-    const req = mockRequest({
-      first_name: 'binar',
-      email: 'Binarchp15@gmail.com',
-      username: 'binarian2',
-    });
-
-    const res = mockResponse();
-    await auth.register(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({
-      result: 'failed',
-      message: 'only lowercase letters allowed for email',
-    });
-  });
-
   test('should 409 if username is already registered', async () => {
     const req = mockRequest({
       first_name: 'binar',
