@@ -43,10 +43,6 @@ module.exports = (sequelize, DataTypes) => {
             args: true,
             msg: 'Please enter valid email address',
           },
-          isLowercase: {
-            args: true,
-            msg: 'only lowercase letters allowed for email',
-          },
         },
         unique: {
           args: true,
@@ -97,6 +93,9 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate: (user, options) => {
           user.password = hashPassword(user.password);
+        },
+        beforeUpdate: (user, options) => {
+          user.dataValues.password = user._previousDataValues.password;
         },
       },
     }
