@@ -69,7 +69,7 @@ const updateUser = async (req, res) => {
           avatar_public_id: result.public_id,
           avatar_url: result.secure_url,
         },
-        { where: { id }, returning: true }
+        { where: { id }, returning: true, individualHooks: true }
       );
     }
 
@@ -84,7 +84,7 @@ const updateUser = async (req, res) => {
         location,
         social_media_url,
       },
-      { where: { id }, returning: true }
+      { where: { id }, returning: true, individualHooks: true }
     );
 
     if (!user) {
