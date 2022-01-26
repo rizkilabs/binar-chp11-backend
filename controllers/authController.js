@@ -78,12 +78,6 @@ const register = async (req, res) => {
         message: 'Please enter valid email address',
       });
     }
-    if (email !== email.toLowerCase()) {
-      return res.status(400).json({
-        result: 'failed',
-        message: 'only lowercase letters allowed for email',
-      });
-    }
     if (userName) {
       return res.status(409).json({
         result: 'failed',
@@ -176,6 +170,7 @@ const loginGoogle = (req, res) => {
   let email = null;
   let first_name = null;
   let last_name = null;
+  let avatar_url = null;
   let username = '';
   client
     .verifyIdToken({
@@ -187,7 +182,8 @@ const loginGoogle = (req, res) => {
       email = payload.email;
       first_name = payload.given_name;
       last_name = payload.family_name;
-      username = email.substring(0, email.lastIndexOf('@'));
+      avatar_url = payload.picture;
+      username = '_' + Math.random().toString(36).substr(2, 9);
       return User.findOne({ where: { email } });
     })
     .then((user) => {
@@ -197,6 +193,7 @@ const loginGoogle = (req, res) => {
           last_name,
           email,
           username,
+          avatar_url,
           password: Math.random() * 1000 + 'google random password secret',
         });
       } else {
@@ -235,8 +232,9 @@ const forgotPassword = async (req, res) => {
     from: 'Go Play',
     to: req.body.email,
     subject: 'Link to Reset Password',
-    html: `<p>Please click the link below to reset your password</p><p>${process.env.CLIENT_URL
-      }/resetpassword/${generateToken(payload)}</p>`,
+    html: `<p>Please click the link below to reset your password</p><p>${
+      process.env.CLIENT_URL
+    }/resetpassword/${generateToken(payload)}</p>`,
   };
   sendEmail(templateEmail);
   return res.status(200).json({
