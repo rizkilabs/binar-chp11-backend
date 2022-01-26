@@ -1,0 +1,23 @@
+env:
+  commonjs: true
+  es2021: true
+  node: true
+extends:
+  - airbnb-base
+parserOptions:
+  ecmaVersion: 13
+rules:
+  {
+    camelcase: off,
+    object-curly-newline: off,
+    no-shadow: off,
+    arrow-body-style: off,
+    comma-dangle: off,
+    prefer-template: off,
+    no-else-return: off,
+    no-console: off,
+    consistent-return: off,
+    prefer-destructuring: off,
+    radix: off,
+    dot-notation: off,
+  }
